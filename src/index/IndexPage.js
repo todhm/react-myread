@@ -7,11 +7,23 @@ class IndexPage extends Component{
 
     state ={bookList:[]}
 
+
+
+    /**
+    * @description get the total book Lists.
+    */
     componentDidMount(){
         BooksAPI.getAll().then((res) => {
             this.setState((prevState,prop)=>({bookList:res}));
         })
     }
+
+    /**
+    * @description get the selected book with the index from total book Lists
+    * update it based on selected  value option
+    * @param {event}  event variable which point to selected book
+    * @param {index} index of targeted book in total bookList
+    */
     handleInputChange=(e,index)=>{
         const shelf=e.target.value;
         this.setState((prevState,prop)=>{
@@ -41,9 +53,12 @@ class IndexPage extends Component{
                     <ol className="books-grid">
                 {bookList.map((book,index)=>{
                     if(book.shelf==="currentlyReading"){
-                        return <BookShelf book ={book} handleInputChange={this.handleInputChange} index={index} key={book.id} shelf={book.shelf}/>
-                    }
-                })}
+                        return <BookShelf book={book}
+                                          handleInputChange={this.handleInputChange}
+                                          index={index}
+                                          key={book.id}
+                                          shelf={book.shelf}
+                                          />}})}
                     </ol>
                   </div>
                 </div>
@@ -51,11 +66,14 @@ class IndexPage extends Component{
                   <h2 className="bookshelf-title">Want To Read</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                {bookList.map((book,index)=>{
-                    if(book.shelf==="wantToRead"){
-                        return <BookShelf book ={book} handleInputChange={this.handleInputChange} index={index} key={book.id} shelf={book.shelf}/>
-                    }
-                })}
+                        {bookList.map((book,index)=>{
+                            if(book.shelf==="wantToRead"){
+                                return <BookShelf book={book}
+                                                  handleInputChange={this.handleInputChange}
+                                                  index={index}
+                                                  key={book.id}
+                                                  shelf={book.shelf}
+                                                  /> }})}
                     </ol>
                   </div>
                 </div>
@@ -63,22 +81,25 @@ class IndexPage extends Component{
                   <h2 className="bookshelf-title">Read</h2>
                   <div className="bookshelf-books">
                     <ol className="books-grid">
-                {bookList.map((book,index)=>{
-                    if(book.shelf=="read"){
-                        return <BookShelf book ={book} handleInputChange={this.handleInputChange} index={index} key={book.id} shelf={book.shelf}/>
-                    }
-                })}
+                        {bookList.map((book,index)=>{
+                            if(book.shelf==="read"){
+                                return <BookShelf book={book}
+                                                  handleInputChange={this.handleInputChange}
+                                                  index={index}
+                                                  key={book.id}
+                                                  shelf={book.shelf}
+                                                  />}})}
                     </ol>
                   </div>
                 </div>
+            </div>
+          </div>
 
-                </div>
-              </div>
-                  <div className="open-search">
-                    <Link to='/search'>
-                        Add a book
-                    </Link>
-                  </div>
+          <div className="open-search">
+            <Link to='/search'>
+                Add a book
+            </Link>
+          </div>
             </div>
         )
     }

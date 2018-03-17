@@ -72,7 +72,6 @@ class SearchPage extends Component{
                          handleInputChange={this.handleSelectChange}
                          index= {index}
                          key={book.id}
-                         shelf={book.shelf? book.shelf :"none"}
                          />
                 )):null}
                 </ol>
