@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
 
 const BookShelf = props=>{
     let {book,index,handleSelectChange} = props
-    let thumbnail = (book.imageLinks)? book.imageLinks.thumbnail : "";
+    let thumbnail = (book.imageLinks)? book.imageLinks.thumbnail : './defaultbook.jpg';
     let author = (book.authors)? book.authors[0]:"";
     let shelf = book.shelf? book.shelf :"none";
     return(

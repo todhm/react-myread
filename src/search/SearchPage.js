@@ -10,23 +10,21 @@ class SearchPage extends Component{
         searchBookList:[]
     }
 
-    debouncedSearch = debounce((query)=>{
-        let bookList = [];
+    searchQuery = (query)=>{
         BooksAPI.search(query).then(res=>{
-            let bookList = res.map((book)=>BooksAPI.get(book.id))
+            //call BooksAPI.get function to recieve shelf of book
+            const bookList = res.map((book)=>BooksAPI.get(book.id))
             Promise.all(bookList).then((res)=> this.setState((prevState,prop)=>({searchBookList:res})))
 
         });
 
-    },500,{'leading':true,'trailing':false})
+    }
 
 
     handleInputChange=(e)=>{
         let query = e.target.value;
         this.setState((prevState,prop)=>({searchWord:query}));
-        if(query.length>=3)
-            this.debouncedSearch(query)
-        else
+        if(query.length<=3)
             this.setState((prevState)=>({searchBookList:[]}))
     }
 
@@ -36,9 +34,13 @@ class SearchPage extends Component{
         if (shelf !== "none")
             this.setState((prevState,prop)=>{
                 let targetBook = prevState.searchBookList[index];
+                targetBook['shelf'] = shelf;
                 BooksAPI.update(targetBook,shelf).then((res)=>{
                     if(res)
                         alert("Successfully added to your shelf")
+                        let newBookList = this.state.searchBook;
+                        newBookList[index] = targetBook
+                        this.setState({searchBookList:newBookList})
                 });
             })
     }
@@ -52,19 +54,18 @@ class SearchPage extends Component{
                         Close
                   </Link>
                 <div className="search-books-input-wrapper">
-                  {/*
-                    NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                    You can find these search terms here:
-                    https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                    However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                    you don't find a specific author or title. Every search is limited by search terms.
-                  */}
                   <input type="text"
                          onChange={this.handleInputChange}
                          value={this.state.searchWord}
                          placeholder="Search by title or author"
+                         onKeyPress={event => {
+                             if (event.key === 'Enter') {
+                                 this.searchQuery(this.state.searchWord)
+                             }
+                         }}
                          />
+
+
 
                 </div>
               </div>
