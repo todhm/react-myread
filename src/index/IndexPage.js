@@ -54,7 +54,7 @@ class IndexPage extends Component{
                 {bookList.map((book,index)=>{
                     if(book.shelf==="currentlyReading"){
                         return <BookShelf book={book}
-                                          handleInputChange={this.handleInputChange}
+                                          handleSelectChange={this.handleInputChange}
                                           index={index}
                                           key={book.id}
                                           shelf={book.shelf}
@@ -69,7 +69,7 @@ class IndexPage extends Component{
                         {bookList.map((book,index)=>{
                             if(book.shelf==="wantToRead"){
                                 return <BookShelf book={book}
-                                                  handleInputChange={this.handleInputChange}
+                                                  handleSelectChange={this.handleInputChange}
                                                   index={index}
                                                   key={book.id}
                                                   shelf={book.shelf}
@@ -84,10 +84,9 @@ class IndexPage extends Component{
                         {bookList.map((book,index)=>{
                             if(book.shelf==="read"){
                                 return <BookShelf book={book}
-                                                  handleInputChange={this.handleInputChange}
+                                                  handleSelectChange={this.handleInputChange}
                                                   index={index}
                                                   key={book.id}
-                                                  shelf={book.shelf}
                                                   />}})}
                     </ol>
                   </div>

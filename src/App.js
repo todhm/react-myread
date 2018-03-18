@@ -1,7 +1,8 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route,Switch } from 'react-router-dom'
 import SearchPage from './search/SearchPage'
 import IndexPage from './index/IndexPage'
+import NotFound from './NotFound'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -18,12 +19,17 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-      <Route exact path='/search' render={() => (
-                      <SearchPage/>
-                  )}/>
-      <Route exact path='/' render={() => (
-                      <IndexPage/>
-                  )}/>
+          <Switch>
+              <Route exact path='/search' render={() => (
+                              <SearchPage/>
+                          )}/>
+              <Route exact path='/' render={() => (
+                              <IndexPage/>
+                          )}/>
+              <Route path='*' render={() => (
+                              <NotFound/>
+                          )}/>
+          </Switch>
       </div>
     )
   }

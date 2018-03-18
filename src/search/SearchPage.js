@@ -11,17 +11,23 @@ class SearchPage extends Component{
     }
 
     debouncedSearch = debounce((query)=>{
-        BooksAPI.search(query).then((res)=>{
-            this.setState((prevState,prop)=>({searchBookList:res}));
-        })
-    },500)
+        let bookList = [];
+        BooksAPI.search(query).then(res=>{
+            let bookList = res.map((book)=>BooksAPI.get(book.id))
+            Promise.all(bookList).then((res)=> this.setState((prevState,prop)=>({searchBookList:res})))
+
+        });
+
+    },500,{'leading':true,'trailing':false})
 
 
     handleInputChange=(e)=>{
         let query = e.target.value;
         this.setState((prevState,prop)=>({searchWord:query}));
         if(query.length>=3)
-        this.debouncedSearch(query)
+            this.debouncedSearch(query)
+        else
+            this.setState((prevState)=>({searchBookList:[]}))
     }
 
 
@@ -69,7 +75,7 @@ class SearchPage extends Component{
                     searchBookList.map((book,index)=>(
                         <BookShelf
                          book ={book}
-                         handleInputChange={this.handleSelectChange}
+                         handleSelectChange={this.handleSelectChange}
                          index= {index}
                          key={book.id}
                          />
