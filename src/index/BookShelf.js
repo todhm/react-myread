@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './IndexPage.css'
 import PropTypes from 'prop-types'
 
@@ -21,7 +21,7 @@ const BookShelf = props=>{
               <div className="book-top">
                 <div className="book-cover" style={{backgroundImage: `url(${thumbnail})` }}></div>
                 <div className="book-shelf-changer">
-                  <select onChange={(e)=>{handleSelectChange(e,index)}} value={shelf} >
+                  <select onChange={(e)=>{handleSelectChange(e,index,book)}} value={shelf} >
                     <option value="undefined" disabled>Move to...</option>
                     <option value="currentlyReading">Currently Reading</option>
                     <option value="wantToRead">Want to Read</option>

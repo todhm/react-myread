@@ -18,7 +18,8 @@ To get started developing right away:
 
 
 Remember that good React design practice is to create new JS files for each component and use import/require statements to include them where they are needed.
-
+##BookShelfList
+In the IndexPage we have to categorize book according to their shelf. Since each category have same UI structure  I make BookShelfList Component to reduce duplication of code. 
 ##BookShelf
 
 BookShelf Component help us update the status of book between 3 options(Want To Read, Read, Currently Reading) and help us to show based on their status.

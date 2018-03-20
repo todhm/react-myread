@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { debounce,throttle } from 'lodash';
+import { debounce } from 'lodash';
 import BookShelf from '../index/BookShelf';
 import *  as BooksAPI  from '../BooksAPI'
 
@@ -34,17 +34,16 @@ class SearchPage extends Component{
     }
 
 
-    handleSelectChange=(e,index)=>{
+    handleSelectChange=(e,index,book)=>{
         let shelf = e.target.value;
         if (shelf !== "none")
             this.setState((prevState,prop)=>{
-                let targetBook = prevState.searchBookList[index];
-                targetBook['shelf'] = shelf;
-                BooksAPI.update(targetBook,shelf).then((res)=>{
+                book['shelf'] = shelf;
+                BooksAPI.update(book,shelf).then((res)=>{
                     if(res)
                         alert("Successfully added to your shelf")
                         let newBookList = this.state.searchBook;
-                        newBookList[index] = targetBook
+                        newBookList[index] = book
                         this.setState({searchBookList:newBookList})
                 });
             })
@@ -75,9 +74,9 @@ class SearchPage extends Component{
                 (searchBookList.length>0)?
                     searchBookList.map((book,index)=>(
                         <BookShelf
-                         book ={book}
+                         index={index}
+                         book={book}
                          handleSelectChange={this.handleSelectChange}
-                         index= {index}
                          key={book.id}
                          />
                 )):null}
