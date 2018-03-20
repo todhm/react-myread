@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { debounce } from 'lodash';
+import { debounce,throttle } from 'lodash';
 import BookShelf from '../index/BookShelf';
 import *  as BooksAPI  from '../BooksAPI'
 
@@ -10,22 +10,27 @@ class SearchPage extends Component{
         searchBookList:[]
     }
 
-    searchQuery = (query)=>{
-        BooksAPI.search(query).then(res=>{
-            //call BooksAPI.get function to recieve shelf of book
-            const bookList = res.map((book)=>BooksAPI.get(book.id))
-            Promise.all(bookList).then((res)=> this.setState((prevState,prop)=>({searchBookList:res})))
+    searchQuery = debounce((query)=>{
+        (query.length >=3)?
+            BooksAPI.search(query).then(res=>{
+                    //call BooksAPI.get function to recieve shelf of book
+                    const bookList = res.map((book)=>BooksAPI.get(book.id))
+                    Promise.all(bookList).then((res)=> {
+                        (this.state.searchWord.length>=3)?
+                            this.setState({searchBookList:res})
+                            :this.setState({searchBookList:[]})
+                    })
+                })
+            :this.setState({searchBookList:[]})
 
-        });
 
-    }
+    },500)
 
 
     handleInputChange=(e)=>{
         let query = e.target.value;
-        this.setState((prevState,prop)=>({searchWord:query}));
-        if(query.length<=3)
-            this.setState((prevState)=>({searchBookList:[]}))
+        this.setState({searchWord:query});
+        this.searchQuery(this.state.searchWord)
     }
 
 
@@ -58,11 +63,6 @@ class SearchPage extends Component{
                          onChange={this.handleInputChange}
                          value={this.state.searchWord}
                          placeholder="Search by title or author"
-                         onKeyPress={event => {
-                             if (event.key === 'Enter') {
-                                 this.searchQuery(this.state.searchWord)
-                             }
-                         }}
                          />
 
 
